@@ -1,0 +1,59 @@
+colors = require('colors');
+
+var path = require('path'),
+    fs = require('fs');
+
+var exec = require('child_process').exec;
+
+var home_path = process.env.HOME,
+    rc = '.taprc2';
+
+var ptaprc = path.join(home_path, rc);
+
+function pemissionError(e){
+    console.log(e);
+    var cmds = [
+        'sudo echo "{}">'+ptaprc,
+        'sudo chmod 777 '+ptaprc
+    ];
+    console.log(cmds.join('\r\n'));
+    console.log('[warn]'.yellow, '系统权限不足，ptap配置文件初始化失败！请访问官网重装Node.js或根据上面的命令提示尝试建立手工建立。');
+}
+
+var isMac = process.platform.match(/darwin/i);
+
+
+if(!fs.existsSync(ptaprc)){
+    //console.log('[info]'.grey, 'echo "{}" > ~/'+rc);
+    try{
+        fs.writeFileSync(ptaprc, '{}');
+    }catch(e){
+        pemissionError(e);
+    }
+}
+
+
+var changelog = require('../commands/changelog');
+
+if(isMac){
+    if(fs.statSync(ptaprc).mode != 33279){
+        exec('chmod 777 '+ptaprc, function (err, stdout, stderr) {
+            if(err){
+                pemissionError(err);
+            }else{
+                //console.log('[ok]'.info, 'chmod 777 ~/'+rc);
+                console.log('[ok]'.green,’ptap 安装成功！');
+                changelog();
+            }
+        });
+    }else{
+        changelog();
+    }
+}else{
+    console.log('[ok]'.green,’ptap 安装成功！');
+    changelog();
+}
+
+
+
+

@@ -1,0 +1,195 @@
+#!/usr/bin/env node
+
+## 设置变量
+var program = require('commander');
+var argv = require('optimist').argv;
+var pjson = require('../package.json');
+var colors = require('colors');
+var path = require('path');
+
+## 设置主题颜色
+colors.setTheme({
+    silly: 'rainbow',
+    input: 'grey',
+    verbose: 'cyan',
+    prompt: 'grey',
+    info: 'green',
+    data: 'grey',
+    help: 'cyan',
+    warn: 'yellow',
+    debug: 'blue',
+    error: 'red'
+});
+
+## 设置版本 命令
+program.version(pjson.version)
+    .usage('<commands> [options]')
+    .option('-d --debug', 'open debug model');
+
+program.on('--help', function() {
+    console.log("  Type 'ptap <commands> -h' for help on a specific command.");
+    console.log("\n");
+});
+
+/*
+ program.command('init')
+ .description('初始化svn帐号（deprecated）')
+ .action(function(){
+ var init = require('../commands/installer');
+ init.install();
+ });
+
+ program.command('cdn')
+ .description('发布目录到各种环境（daily|预发|线上），默认当前目录')
+ .usage('<path> <options>')
+ .option('-v --version', '发布版本，格式为x.y.z或者用+/=')
+ .option('-e --env', '发布环境, daily|pre|online, 默认是daily')
+ .option('-m --msg', '发布日志')
+ .option('-f --force', '忽略本地未提交的文件，强制发布')
+ .option('-p --passCopy', '忽略分支拷贝操作，用于调用分支接口失败时使用')
+ .action(function(){
+ 	var cdn = require('../commands/cdn');
+ 	cdn.publish();
+ });
+
+ program.command('log')
+ .description('查看发布日志')
+ .usage('[path] [options]')
+ .option('-l --limit [limit]', '指定查看条数')
+ .option('-i --logid [logid]', '指定特定logid')
+ .option('-e --env', '指定查看环境, daily|pre|online, 默认查看全部环境')
+ .option('-b --verbose [verbose]', '查看详细信息，文件列表')
+ .action(function(){
+ require('../commands/log')();
+ });
+
+ program.command('branch')
+ .description('分支操作')
+ .usage('[path] -v <version>')
+ .option('--name [string]', '分支英文名')
+ .option('--alias [string]', '分支别名，建议为中文')
+ .action(function(){
+ var branch = require('../commands/branch');
+ branch.mkbranch();
+ });
+
+ */
+
+program.command('build')
+    .description('构建（拷贝src、压缩、ascii化、图片绝对路径替换等）')
+    .usage('[path] [options]')
+    .option('-a --ascii', '仅对代码进行ascii化')
+    .option('-o --origin', '拷贝原始代码到build目录，不进行代码压缩和ascii化')
+    .option('-b --buildcfg', '是否执行buildcfg')
+    .option('-v --version', 'css图片路径绝对路径化后对应的版本号')
+    .option('-w --watch', '监听文件/目录改动，发生变化则自动build（多个以逗号分隔，若不指定则默认监听src目录）')
+    .option('-t --timestamp', '在构建后的文件开头插入构建时间字符串')
+    .option('-f --force', '强制build(忽略构建中出现的错误)')
+    .option('-c --compress', '已移除（默认进行压缩+ascii）')
+    .option('-x --x', '只处理某一种文件')
+    .action(function(a) {
+        require('../commands/build')();
+    });
+
+program.command('buildcfg')
+    .description('生成包配置文件')
+    .usage('[path]')
+    .option('-v [string]', '包的版本号')
+    .action(function() {
+        require('../commands/buildcfg.js')();
+    });
+
+program.command('gconfig')
+    .description('更新/初始全局包配置gconfig.vm文件')
+    .action(function(a) {
+        var gconfig = require('../commands/gconfig');
+        gconfig.init(a);
+    });
+
+program.command('checkcfg')
+    .description('检查seed中依赖的模块是否发布到线上（seed.js、gconfig.vm和appconfig.vm）')
+    .usage('[path]')
+    .option('-v --vm [string]', '检测gconfig.vm和appconfig.vm（在模板或应用根目录执行）')
+    .action(function(p) {
+        if (p.vm) {
+            require('../tools/checkAssetsOnline.js');
+        }
+        else {
+            var tool = require('../tools/checkOnlineExists.js');
+            tool.check();
+        }
+    });
+
+/*
+program.command('vms')
+    .description('自动同步本地的vm到开发机上（实时看修改效果）')
+    .usage('[local_path] <user@host:remote_path>')
+    .action(function() {
+        require('../commands/vmsync')();
+    });
+*/
+
+program.command('sprite')
+    .description('自动生成sprite后的样式')
+    .usage('<path>')
+    .action(function() {
+        require('../commands/sprite')();
+    });
+
+program.command('host')
+    .description('host管理')
+    .action(function() {
+        require('../commands/host')()
+    });
+
+
+program.command('if')
+    .description('if - 接口工具')
+    .option('-i, --init [projectRoot]', '接口环境初始化')
+    .option('-s, --sync [configFilePath]', '接口文档同步')
+    .option('-e, --server [projectRoot]', '启动接口服务器')
+    .option('-p, --port [port]', '接口服务器端口')
+    .action(function() {
+        require('../commands/if').exec(argv);
+    });
+
+
+/*
+program.command('update')
+    .description('更新ptap到最新版本')
+    .action(function() {
+        require('../commands/update')();
+    });
+*/
+
+program.command('changelog')
+    .description('查看changelog')
+    .action(function() {
+        require('../commands/changelog')();
+    });
+
+
+// 解析ptap命令
+function dealWithArgv() {
+    if (argv._.length) {
+        program.parse(process.argv);
+    } else {
+        if (argv.v) {
+            console.log(program.version());
+            process.exit();
+        } else {
+            program.parse(process.argv);
+            console.log(program.help());
+            process.exit(0);
+        }
+    }
+}
+
+// 自动检测更新
+// var checkversion = require('../commands/checkversion');
+// checkversion(dealWithArgv);
+
+dealWithArgv();
+
+
+

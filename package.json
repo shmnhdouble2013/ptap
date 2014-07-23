@@ -1,0 +1,54 @@
+{
+    "name": "grunt-ptap",
+    "version": "0.1.7",
+    "description": "pinganfang assets build tool.",
+    "author": "huangjia",
+    "keywords": ["pinganfang", "ptap", "asset", "publish"],
+    "bin": {
+        "ptap": "./bin/ptap"
+    },
+    "dependencies": {
+        "optimist": "*",
+        "commander": "1.3.x",
+        "colors": "*",
+        "iwalk": "*",
+        "underscore": "*",
+        "mocha": "*",
+        "async": "*",
+        "cssom": "*",
+        "node-file": "*",
+        "uglify-js": "2.4.x",
+        "clean-css": "1.1.x",
+        "walk": "2.2.x",
+        "native2ascii":"*",
+        "jschardet": "*",
+        "iconv-lite": "*",
+        "node-kpc": "*"
+    },
+    "peerDependencies": {
+        "grunt": "~0.4.2"
+    },
+    "engines": {
+        "node": ">= 0.8.0"
+    },
+    "scripts": {
+        "postinstall": "node bin/install"
+    },
+    "maintainers": [
+        {
+            "name": "huangjia",
+            "email": "huangjia@pinganfang.com"
+        }
+    ],
+    "homepage": "https://github.com/shmnhdouble2013/ptap",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:shmnhdouble2013/ptap.git"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": ""
+        }
+    ]
+}
