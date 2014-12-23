@@ -86,7 +86,7 @@ buildcfg任务用于生成包的配置文件，配置文件用于让脚本在use
 
 * name : 包名，模块的前缀，例如: haofang，建议使用 仓库名(应用名字)
 * version : 发布版本号，建议从package.json中读取
-* baseurl : 包的url前缀(资源库域名)，默认是 http://static.pinganfang.com/
+* baseurl : 包的url前缀(资源库域名)，默认是 http://static.**.com/
 
 #### build  
 
