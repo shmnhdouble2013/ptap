@@ -34,14 +34,15 @@ Date.prototype.format = function(format){
         "S" : this.getMilliseconds() //millisecond
     }
 
-    if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
-        (this.getFullYear()+"").substr(4 - RegExp.$1.length));
-    for(var k in o)if(new RegExp("("+ k +")").test(format))
-        format = format.replace(RegExp.$1,
-            RegExp.$1.length==1 ? o[k] :
-                ("00"+ o[k]).substr((""+ o[k]).length));
-    return format;
-}
+    if( /(y+)/.test(format) ){
+        format = format.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length) );
+    }
+
+    for(var k in o){
+        if(new RegExp("("+ k +")").test(format)){
+            return format.replace(RegExp.$1,  RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length) );
+        }
+    }
 
 Array.prototype.remove = function(from, to) {
     var rest = this.slice((to || from) + 1 || this.length);
@@ -71,7 +72,7 @@ function n2a(content, isCss){
 
     //对于 css 文件，还需要将 \uxxxx 中的 u 去掉（css 只认识\xxxx）
     if(isCss){
-        output = output.replace(/\\u/g,"\\");
+        output = output.replace(/\\u/g, "\\");
     }
 
     return output;
@@ -213,7 +214,7 @@ module.exports = function(){
 
 
                         if(argv.t && (extname == '.js' || extname == '.css') ){
-                            content = '/* build '+ dstring +' */\r\n' + content;
+                            content = '/* ptap build '+ dstring +' */\r\n' + content;
                         }
 
 

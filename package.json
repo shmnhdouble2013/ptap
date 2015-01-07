@@ -1,6 +1,6 @@
 {
     "name": "grunt-ptap",
-    "version": "0.1.7",
+    "version": "0.1.0",
     "description": "pinganfang assets build tool.",
     "author": "huangjia",
     "keywords": ["pinganfang", "ptap", "asset", "publish"],

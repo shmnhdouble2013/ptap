@@ -17,7 +17,7 @@ function pemissionError(e){
         'sudo chmod 777 '+ptaprc
     ];
     console.log(cmds.join('\r\n'));
-    console.log('[warn]'.yellow, '系统权限不足，ptap配置文件初始化失败！请访问官网重装Node.js或根据上面的命令提示尝试建立手工建立。');
+    console.log('[warn]'.yellow, '系统权限不足，ptap配置文件初始化失败！请访问Nodejs官网重装Node.js或根据上面的命令提示尝试建立手工建立。');
 }
 
 var isMac = process.platform.match(/darwin/i);

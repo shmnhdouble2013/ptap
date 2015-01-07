@@ -1,3 +1,4 @@
+
 /**
  * ptap buildcfg cmd
  * @author huangjia@pinganfang.com
@@ -32,7 +33,7 @@ function getPackageCfg(dirPath) {
 }
 
 
-var buildcfg = function (configure, version0,callback) {
+var buildcfg = function (configure, version0, callback) {
     // 用户输入的路径
     var dirFromCommander = path.resolve(argv._.length > 1 ? argv._[1] : '.');
 
@@ -56,7 +57,7 @@ var buildcfg = function (configure, version0,callback) {
     var currentPackageName;
     var currentSubModule = '';
     var configFileDir;
-    var isMUI = false;
+    var isPUI = false;
     var currentSourcePath = currentPath.indexOf("/src")===-1?currentPath+path.sep+"src":currentPath;
     var seedPath,cfgPath;
 
@@ -64,20 +65,20 @@ var buildcfg = function (configure, version0,callback) {
 
 
     //判断是否在MUI目录下进行的操作
-    if (currentPath.indexOf('mui' + path.sep) >= 0) {
+    if (currentPath.indexOf('pui' + path.sep) >= 0) {
         //configFileDir = currentPath.split('mui')[0] + 'mui' + path.sep + 'seed' + path.sep +'src' + path.sep;
-        configFileDir = currentPath.split('mui')[0] + 'mui' + path.sep;
-        isMUI = true;
+        configFileDir = currentPath.split('pui')[0] + 'pui' + path.sep;
+        isPUI = true;
     } else {
         configFileDir = currentSourcePath;
     }
-    //MUI目录和其他包处理是不一样的，MUI生成的配置需要写到seed目录下
+    // PUI目录和其他包处理是不一样的，MUI生成的配置需要写到seed目录下
     cfgPath = configFileDir + path.sep + 'config.json';
     seedPath = configFileDir + path.sep + 'seed.js';
 
 
-    if (isMUI) {
-     	console.log("[info]".info, "Mui Seed 已经改为自动构建，请不要手动构建seed。下面生成的代码，只保证module部分正确，并且只用于特殊情况下生成单个组件的配置，请不要提交到seed。");
+    if (isPUI) {
+     	console.log("[info]".info, "pui Seed 已经改为自动构建，请不要手动构建seed。下面生成的代码，只保证module部分正确，并且只用于特殊情况下生成单个组件的配置，请不要提交到seed。");
      	//return;
         currentSubModule = path.basename(currentPath);
         currentPackageName = 'mui';
@@ -116,12 +117,11 @@ var buildcfg = function (configure, version0,callback) {
                             // 如果不存在packageName 使用moudleName的第一个
                             currentPackageName = i.split("/")[0];
                             // @todo 需要重新处理下css的moduleName，configRet.modules
-                            // 不过对于非MUI情况，css Module会被删除，所以就不处理了
+                            // 不过对于非PUI情况，css Module会被删除，所以就不处理了
                         }
 
-
-                        if (isMUI) {
-                            mod.path = mod.path.replace(currentSubModule, 'mui/' + currentSubModule + '/' + version);
+                        if (isPUI) {
+                            mod.path = mod.path.replace(currentSubModule, 'pui/' + currentSubModule + '/' + version);
                         } else {
                             delete mod.path;
                         }
@@ -137,10 +137,11 @@ var buildcfg = function (configure, version0,callback) {
 
 
     //输出config集合
-    //@todo: 迁移配置文件读取逻辑到前面 by tiejun
+    //@todo: 迁移配置文件读取逻辑到前面 by tj
     walker.on('end', function () {
 
         //configRet.packages.push(packageFileContent.package);
+
         //获取原来config.json里的内容
         var originConfig;
         try {
@@ -153,6 +154,7 @@ var buildcfg = function (configure, version0,callback) {
             };
             console.log("[warn]".warn,"can't read default config");
         }
+
         //在原有配置文件的基础上进行合并
         configRet.packages = originConfig.packages;
         if(originConfig.version){
@@ -161,7 +163,7 @@ var buildcfg = function (configure, version0,callback) {
         if (originConfig.modules && configRet.modules) {
 
             // 删除原有配置文件
-            if (currentSubModule || isMUI) {
+            if (currentSubModule || isPUI) {
                 _.each(originConfig.modules, function (mod, name) {
                     if (new RegExp("^" + currentPackageName + "/" + currentSubModule + "($|/)").test(name)) {
                         delete originConfig.modules[name];
@@ -172,25 +174,8 @@ var buildcfg = function (configure, version0,callback) {
             }
             //console.log(configRet.modules);
             configRet.modules = _.extend(originConfig.modules, configRet.modules);
-            // 更新seed
-            /*if (isMUI && configRet.modules["mui/seed"]) {
-                getSeedLastVersion(function (version) {
-                    if (version) {
-                        version = version.split(".");
-                        version[2] = parseInt(version[2]) + 1;
-                        version = version.join(".");
-                        configRet.modules["mui/seed"].path = "mui/seed/" + version + "/seed.js";
-                        configRet.version = version;
-                        console.log("[info]".info, "mui/seed 本次版本为", version.underline);
-                    }else{
-                        console.log("[warn]".warn,"mui/seed 版本未更新，请手动更新(线上version+0.0.1)")
-                    }
-                    wirteConfig();
-                });
-            } else {*/
-                wirteConfig();
-            //}
 
+            wirteConfig();
         }
     });
 
@@ -199,26 +184,37 @@ var buildcfg = function (configure, version0,callback) {
         modifySeedConfig({
                 //SEED版本升级的方式
                 seedHandleType : argv.seed || null,
+
                 //是否进行包下文件的全量更新
                 isBuildAll : !!argv.all || false,
+
                 //包的版本号
                 version : version,
+
                 //buildcfg功能完成后的回调函数
                 callback : callback,
+
                 //当前的执行buildcfg的路径
                 currentPath : currentPath,
+
                 //是否在mui下执行buildcfg
-                isMUI : isMUI,
+                isPUI : isPUI,
+
                 //config.js所在的目录
                 configFileDir : configFileDir,
+
                 //config.js所在的路径
                 cfgPath : cfgPath,
+
                 //seed文件的路径
                 seedPath : seedPath,
+
                 //当前的包名
                 currentPackageName: currentPackageName,
+
                 //当前的子包名
                 currentSubModule : currentSubModule,
+
                 configRet:configRet
             });
     }

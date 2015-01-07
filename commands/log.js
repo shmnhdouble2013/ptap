@@ -1,3 +1,4 @@
+
 var http    = require('http');
 var path    = require('path');
 var argv    = require('optimist').argv;
@@ -55,7 +56,7 @@ function handlerLogRes(res){
             var result = JSON.parse(res);
             showLogInfo(result);
         }catch(e){
-            console.log('[error]'.error, '解析在线log信息出错！请联系仙羽解决');
+            console.log('[error]'.error, '解析在线log信息出错！');
         }
     });
 }
