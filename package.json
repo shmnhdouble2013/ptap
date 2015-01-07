@@ -1,9 +1,9 @@
 {
-    "name": "grunt-ptap",
+    "name": "ptap",
     "version": "0.1.0",
-    "description": "pinganfang assets build tool.",
-    "author": "huangjia",
-    "keywords": ["pinganfang", "ptap", "asset", "publish"],
+    "description": "pafang assets build tool.",
+    "author": "huangjia86",
+    "keywords": ["paf", "ptap", "asset", "publish"],
     "bin": {
         "ptap": "./bin/ptap"
     },
@@ -36,8 +36,8 @@
     },
     "maintainers": [
         {
-            "name": "huangjia",
-            "email": "huangjia@pinganfang.com"
+            "name": "huangjia86",
+            "email": "huangjia86@yeah.net"
         }
     ],
     "homepage": "https://github.com/shmnhdouble2013/ptap",
