@@ -31,19 +31,20 @@ program.on('--help', function() {
     console.log("\n");
 });
 
-/*
  program.command('init')
- .description('初始化svn帐号（deprecated）')
+ .description('初始化git帐号（deprecated）')
  .action(function(){
- var init = require('../commands/installer');
- init.install();
+    var init = require('../commands/installer');
+    init.install();
  });
 
+
+/*
  program.command('cdn')
- .description('发布目录到各种环境（daily|预发|线上），默认当前目录')
+ .description('发布目录到各种环境（daily|线上），默认当前目录')
  .usage('<path> <options>')
- .option('-v --version', '发布版本，格式为x.y.z或者用+/=')
- .option('-e --env', '发布环境, daily|pre|online, 默认是daily')
+ .option('-v --version', '发布版本，格式为x.y.z')
+ .option('-e --env', '发布环境, daily|static, 默认是daily')
  .option('-m --msg', '发布日志')
  .option('-f --force', '忽略本地未提交的文件，强制发布')
  .option('-p --passCopy', '忽略分支拷贝操作，用于调用分支接口失败时使用')
@@ -99,36 +100,6 @@ program.command('buildcfg')
         require('../commands/buildcfg.js')();
     });
 
-program.command('gconfig')
-    .description('更新/初始全局包配置gconfig.vm文件')
-    .action(function(a) {
-        var gconfig = require('../commands/gconfig');
-        gconfig.init(a);
-    });
-
-program.command('checkcfg')
-    .description('检查seed中依赖的模块是否发布到线上（seed.js、gconfig.vm和appconfig.vm）')
-    .usage('[path]')
-    .option('-v --vm [string]', '检测gconfig.vm和appconfig.vm（在模板或应用根目录执行）')
-    .action(function(p) {
-        if (p.vm) {
-            require('../tools/checkAssetsOnline.js');
-        }
-        else {
-            var tool = require('../tools/checkOnlineExists.js');
-            tool.check();
-        }
-    });
-
-/*
-program.command('vms')
-    .description('自动同步本地的vm到开发机上（实时看修改效果）')
-    .usage('[local_path] <user@host:remote_path>')
-    .action(function() {
-        require('../commands/vmsync')();
-    });
-*/
-
 program.command('sprite')
     .description('自动生成sprite后的样式')
     .usage('<path>')
@@ -143,6 +114,7 @@ program.command('host')
     });
 
 
+/*
 program.command('if')
     .description('if - 接口工具')
     .option('-i, --init [projectRoot]', '接口环境初始化')
@@ -152,15 +124,13 @@ program.command('if')
     .action(function() {
         require('../commands/if').exec(argv);
     });
+*/
 
-
-/*
 program.command('update')
     .description('更新ptap到最新版本')
     .action(function() {
         require('../commands/update')();
     });
-*/
 
 program.command('changelog')
     .description('查看changelog')

@@ -15,7 +15,6 @@ var HOST = 'http://10.125.7.249:9999/ptap-php-server/';
 
 var PUBLISH_API = {
     daily  : HOST + '?cmd=cdn&',
-    prepub : HOST + '?cmd=cdn&',
     online : HOST + '?cmd=cdn&'
 };
 var QUERYLOG_API = HOST + '?cmd=log&';

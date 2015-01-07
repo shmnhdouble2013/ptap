@@ -1,10 +1,11 @@
+
 var path = require('path'),
     fs   = require('fs'),
     program = require('commander'),
     conf  = require('../lib/conf');
 
 function enterUsername(){
-    var msg = '请输入svn帐号：';
+    var msg = '请输入git帐号：';
     program.prompt(msg + ' ', function(usr){
         if(usr.length){
             enterPassword(usr);
@@ -41,8 +42,9 @@ function saveUser(username, password){
 module.exports.install = function(){
 
     var config = conf.load();
+
     if(config.username && config.password){
-        var msg = "当前svn用户："+config.username+"，是否要重新初始化？(Y/N)";
+        var msg = "当前git用户："+config.username+"，是否要重新初始化？(Y/N)";
         program.prompt(msg + ' ', function(input){
             if(input.toUpperCase() == 'Y'){
                 enterUsername();

@@ -1,3 +1,4 @@
+
 /*
  * ptap
  * 
@@ -103,8 +104,6 @@ module.exports = function(grunt) {
             //grunt.task.run('kpc');
 
             done();
-
-
         }
 
 
@@ -112,6 +111,7 @@ module.exports = function(grunt) {
             var options = this.options({});
 
             var argv = ['build'];
+
             //不压缩则使用ascii
             if(!options.compress){
                 argv.push('-a');
@@ -142,6 +142,7 @@ module.exports = function(grunt) {
             var options = this.options({});
 
             var argv = ['build'];
+
             //不压缩则使用ascii
             if(!options.compress){
                 argv.push('-a');
@@ -175,6 +176,7 @@ module.exports = function(grunt) {
             var options = this.options({});
 
             var argv = ['build'];
+
             //不压缩则使用ascii
             if(!options.compress){
                 argv.push('-a');

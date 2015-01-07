@@ -1,3 +1,4 @@
+
 require('colors');
 
 var spawn = require('child_process').spawn;
@@ -6,7 +7,7 @@ var path = require('path');
 var CWD = process.cwd();
 
 var cmd;
-var args = ['update', 'ptap', '-g', '--registry=http://registry.npm.taobao.net'];
+var args = ['update', 'ptap', '-g', '--registry=https://www.npmjs.com/'];
 
 var isWin = process.platform === "win32";
 var tip;

@@ -1,6 +1,6 @@
-# PTap
+# Ptap
 
-发布工具集。
+前端工具集。
 
 
 ## 安装
@@ -67,17 +67,6 @@
         grunt.registerTask('default', ['ptap']);        
     }
 
-#### 二、执行构建
-
-在项目根目录下执行
-
-    grunt
-    
-这样就完成了seed文件生成、文件压缩等构建工作。
-
-更多grunt使用手册请参考[Grunt官方文档](http://gruntjs.com/getting-started)。
-
-
 ## grunt-ptap配置
 
 #### buildcfg
@@ -88,7 +77,9 @@ buildcfg任务用于生成包的配置文件，配置文件用于让脚本在use
 * version : 发布版本号，建议从package.json中读取
 * baseurl : 包的url前缀(资源库域名)，默认是 http://static.**.com/
 
-#### build  
+#### build
+
+    ptap build
 
 build任务用于进行ascii化、文件压缩、文件编译等源码处理工作，配置项：  
 

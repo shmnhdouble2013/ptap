@@ -1,3 +1,10 @@
+
+/**
+ * host manage js
+ * jiahuang
+ * 201408
+ */
+
 var fs = require('fs');
 
 var isWin = !!process.platform.match(/^win/);
@@ -16,6 +23,7 @@ var hostFile = isWin ? '' : '/etc/hosts';
  * 此工具生成的格式：一行一个，不带任何注释
  *
  */
+
 module.exports = function(){
     var argv = process.argv;
     var len = argv.length;
