@@ -1,26 +1,28 @@
 
+/**
+ * build核心文件
+ * 水木年华double
+ * 20141115
+ */
+
 require('colors');
 
-var path = require('path');
-var util = require('../lib/util');
-var program = require('commander');
-var argv    = require('optimist').argv;
-var fs = require('fs');
-var fsutil = require('../lib/fsutil');
-var Walk = require('walk');
-
-var jschardet = require('jschardet');
-var iconv = require('iconv-lite');
-var native2ascii = require('native2ascii').native2ascii;
-
-var debug = require('../lib/debug');
-var async = require('async');
-var startTimer;
-var buildcfg = require('../commands/buildcfg');
-var exec = require('child_process').exec;
-
-var watch = require('../lib/watch');
-var ps, watchPath, isBuilding;
+var path = require('path'),
+    util = require('../lib/util'),
+    program = require('commander'),
+    argv    = require('optimist').argv,
+    fs = require('fs'),
+    fsutil = require('../lib/fsutil'),
+    Walk = require('walk'),
+    jschardet = require('jschardet'),
+    iconv = require('iconv-lite'),
+    native2ascii = require('native2ascii').native2ascii,
+    debug = require('../lib/debug'),
+    async = require('async'),
+    buildcfg = require('../commands/buildcfg'),
+    exec = require('child_process').exec,
+    watch = require('../lib/watch'),
+    ps, watchPath, isBuilding, startTimer;
 
 
 Date.prototype.format = function(format) {
@@ -51,15 +53,20 @@ Array.prototype.remove = function(from, to) {
     return this.push.apply(this, rest);
 };
 
+/**
+ * 递归删除文件夹文件
+ */
 var deleteFolderRecursive = function(path) {
     var files = [];
+
     if( fs.existsSync(path) ) {
         files = fs.readdirSync(path);
-        files.forEach(function(file,index){
+        files.forEach(function(file, index){
             var curPath = path + "/" + file;
-            if(fs.statSync(curPath).isDirectory()) { // recurse
+
+            if(fs.statSync(curPath).isDirectory()) {
                 deleteFolderRecursive(curPath);
-            } else { // delete file
+            } else {
                 fs.unlinkSync(curPath);
             }
         });
@@ -67,8 +74,10 @@ var deleteFolderRecursive = function(path) {
     }
 };
 
+/**
+ * ascii css js
+ */
 function n2a(content, isCss){
-
     var output = native2ascii(content);
 
     //对于 css 文件，还需要将 \uxxxx 中的 u 去掉（css 只认识\xxxx）
@@ -79,6 +88,8 @@ function n2a(content, isCss){
     return output;
 }
 
+
+// 输出 出错报警信息
 function echoWaring(){
     if(echoWaring.warnings.length){
         console.log('[warn]'.yellow, '以下文件中含有不规范的daily环境代码，请移除：');
@@ -97,12 +108,18 @@ function echoWaring(){
 echoWaring.warnings = [];
 echoWaring.debugcode_warnings = [];
 
+
+// 输出具体文件出错信息 终止进程
 function errHanding(f, err){
     console.log('[error]'.red, f+': 压缩出错，详细信息：');
     console.log(err);
     process.exit(1);
 }
 
+
+/**
+ * 开始构建代码
+ */
 module.exports = function(){
     var dir = path.resolve(argv._.length > 1 ? argv._[1] : '.');
 
@@ -202,7 +219,7 @@ module.exports = function(){
                                     }
 
                                     break;
-                                default :;
+                                        default :;
                                     break;
                             }
                         }
@@ -252,61 +269,63 @@ module.exports = function(){
         });
     }
 
-    var buildcfg = require('./buildcfg');
-
-    if(argv.b){
-        buildcfg(dir, function(){
-            build(whetherWatch);
-        });
-    }else{
-        build(whetherWatch);
-    }
-
-    function whetherWatch(){
-        if(argv.w){
-            var wp = argv.w;
-
-            var paths = wp !== true ? wp.split(','): '';
-            watchPath = [];
-
-            if(paths.length){
-                paths.forEach(function(item){
-                    watchPath.push(path.resolve(dir, item));
-                });
-            }else{
-                watchPath = srcPath;
-            }
-
-            console.log('[watching]'.rainbow, watchPath);
-
-            watch(watchPath, function(filename){
-
-                if(!isBuilding){
-
-                    isBuilding = true;
-
-                    console.log('[change]'.cyan, filename+' changed.');
-                    console.log('[change]'.cyan, '开始重新构建：');
-
-                    var spawn = require('child_process').spawn;
-                    var cmd = process.argv.shift();
-
-                    ps = spawn(cmd, process.argv, {
-                        env: process.env,
-                        cwd: process.cwd(),
-                        stdio: [
-                            process.stdin,
-                            process.stdout,
-                            process.stderr
-                        ]
-                    });
-
-                    ps.on('exit', function (code, signal){
-                        process.exit(code);
-                    });
-                }
-            });
-        }
-    }
+//
+//    // 包配置构建
+//    var buildcfg = require('./buildcfg');
+//
+//    if(argv.b){
+//        buildcfg(dir, function(){
+//            build(whetherWatch);
+//        });
+//    }else{
+//        build(whetherWatch);
+//    }
+//
+//    function whetherWatch(){
+//        if(argv.w){
+//            var wp = argv.w;
+//
+//            var paths = wp !== true ? wp.split(','): '';
+//            watchPath = [];
+//
+//            if(paths.length){
+//                paths.forEach(function(item){
+//                    watchPath.push(path.resolve(dir, item));
+//                });
+//            }else{
+//                watchPath = srcPath;
+//            }
+//
+//            console.log('[watching]'.rainbow, watchPath);
+//
+//            watch(watchPath, function(filename){
+//
+//                if(!isBuilding){
+//
+//                    isBuilding = true;
+//
+//                    console.log('[change]'.cyan, filename+' changed.');
+//                    console.log('[change]'.cyan, '开始重新构建：');
+//
+//                    var spawn = require('child_process').spawn;
+//                    var cmd = process.argv.shift();
+//
+//                    ps = spawn(cmd, process.argv, {
+//                        env: process.env,
+//                        cwd: process.cwd(),
+//                        stdio: [
+//                            process.stdin,
+//                            process.stdout,
+//                            process.stderr
+//                        ]
+//                    });
+//
+//                    ps.on('exit', function (code, signal){
+//                        process.exit(code);
+//                    });
+//                }
+//            });
+//        }
+//    }
 
 }

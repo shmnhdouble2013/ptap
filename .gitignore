@@ -1,6 +1,7 @@
 node_modules
 .idea
 tap.iml
+ptap.iml
 global.json
 .DS_Store
 */.DS_Store

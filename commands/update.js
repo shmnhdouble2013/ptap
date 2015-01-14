@@ -2,14 +2,14 @@ require('colors');
 
 var spawn = require('child_process').spawn;
 var path = require('path');
-
 var CWD = process.cwd();
 
-var cmd;
 var args = ['update', 'ptap', '-g', '--registry=http://registry.npmjs.org/'];
-
 var isWin = process.platform === "win32";
-var tip;
+
+var cmd,
+    tip;
+
 if (isWin) {
     cmd = 'npm.cmd';
 }else{
@@ -27,7 +27,7 @@ module.exports = function(callback){
         stdio: [
             process.stdin,
             process.stdout,
-            process.stderr,
+            process.stderr
         ]
     });
 

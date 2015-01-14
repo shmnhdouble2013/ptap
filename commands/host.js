@@ -1,12 +1,11 @@
 
 /**
  * host manage js
- * jiahuang
+ * 水木年华double
  * 201408
  */
 
 var fs = require('fs');
-
 var isWin = !!process.platform.match(/^win/);
 var hostFile = isWin ? '' : '/etc/hosts';
 

@@ -1,7 +1,7 @@
 /**
  * Created with IntelliJ IDEA.
  * @version : 0-0-1
- * @author huangjia@pinganfang.com
+ * @author 水木年华double
  * @Date  201407
  * @desc : 检测线上版本与本地版本是否匹配，并给出提示信息引导升级
  */
@@ -27,7 +27,7 @@ module.exports = function (fn) {
     //console.log(isCheckversion + '==' +'---'+checkversionTime);
     if (isCheckversion) {
         try{
-            config.inittime=nowTime;
+            config.inittime = nowTime;
             conf.save(config);
         }catch(e){
 
@@ -43,28 +43,7 @@ module.exports = function (fn) {
                 } else {
                     program.prompt(localVer + '与线上版本(' + curVer + ')不一致,是否进行升级(y/n)  ', function (input) {
                         if (input.toUpperCase() == 'Y') {
-                            update(function(){
-
-                                var spawn = require('child_process').spawn;
-
-                                // 更新后执行一下上一条命令
-                                var cmd = process.argv.shift();
-
-                                var lastCmd  = spawn(cmd, process.argv, {
-                                    env: process.env,
-                                    cwd: process.cwd(),
-                                    stdio: [
-//                                        process.stdin,
-                                        process.stdout,
-                                        process.stderr,
-                                    ]
-                                });
-
-                                lastCmd.on('exit', function (code, signal){
-                                    if(callback) callback();
-                                    process.exit(code);
-                                });
-                            });
+                            update();
                         } else {
                             callback();
                         }
@@ -82,7 +61,6 @@ module.exports = function (fn) {
      * @param curVer
      */
     function matchVersion(localVer, curVer) {
-//        console.log(localVer >= curVer);
         return localVer >= curVer;
     }
 

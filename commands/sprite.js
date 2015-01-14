@@ -1,6 +1,6 @@
 /**
  * Created with IntelliJ IDEA.
- * @author huangjia@pinganfang.com
+ * @author 水木年华double
  * @Date  201407
  * @version: 1-0-0
  */
@@ -18,6 +18,7 @@ var config = {
         "cssRoot": dirFromCommander
     }
 };
+
 module.exports = function(){
     try{
         var canvas = require('canvas');

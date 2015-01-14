@@ -1,7 +1,7 @@
 
 /**
  * init dir js
- * @author huangjia@pinganfang.com
+ * @author 水木年华double
  * @Date  201407
  */
 
@@ -17,9 +17,9 @@ var os = require('os');
 
 module.exports = {
     run: function(){
-        var dirname = argv._[1] || '.';
+        var dirname = argv._[1] || '.',
+            dir = path.resolve(dirname);
 
-        var dir = path.resolve(dirname);
         if(!fs.existsSync(dir)){
             console.log('[info]'.grey, '创建'+dirname+'目录');
             fs.mkdirSync(dir);

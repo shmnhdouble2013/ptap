@@ -1,3 +1,4 @@
+
 colors = require('colors');
 
 var path = require('path'),
@@ -6,7 +7,7 @@ var path = require('path'),
 var exec = require('child_process').exec;
 
 var home_path = process.env.HOME,
-    rc = '.taprc2';
+    rc = '.ptaprc';
 
 var ptaprc = path.join(home_path, rc);
 
@@ -22,16 +23,13 @@ function pemissionError(e){
 
 var isMac = process.platform.match(/darwin/i);
 
-
 if(!fs.existsSync(ptaprc)){
-    //console.log('[info]'.grey, 'echo "{}" > ~/'+rc);
     try{
         fs.writeFileSync(ptaprc, '{}');
     }catch(e){
         pemissionError(e);
     }
 }
-
 
 var changelog = require('../commands/changelog');
 
@@ -41,8 +39,7 @@ if(isMac){
             if(err){
                 pemissionError(err);
             }else{
-                //console.log('[ok]'.info, 'chmod 777 ~/'+rc);
-                console.log('[ok]'.green,’ptap 安装成功！');
+                console.log('[ok]'.green,'ptap 安装成功！');
                 changelog();
             }
         });
@@ -50,7 +47,7 @@ if(isMac){
         changelog();
     }
 }else{
-    console.log('[ok]'.green,’ptap 安装成功！');
+    console.log('[ok]'.green,'ptap 安装成功！');
     changelog();
 }
 

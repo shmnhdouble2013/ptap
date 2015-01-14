@@ -1,7 +1,7 @@
 /**
  * Created with IntelliJ IDEA.
  * @version : 0-0-1 
- * @author huangjia@pinganfang.com
+ * @author 水木年华double
  * @Date  201407
  * To change this template use File | Settings | File Templates.
  */
@@ -15,7 +15,7 @@ module.exports = function(){
     var sudo = '';
     if(process.platform.match(/darwin/i)) sudo = 'sudo ';
 
-    exec(sudo+'npm install ptap --registry=http://registry.npm.taobao.net -g', function (err, stdout, stderr) {
+    exec(sudo+'npm install ptap --registry=http://registry.npmjs.org/ -g', function (err, stdout, stderr) {
         if(err){
             console.log('[error]'.red, 'ptap升级失败，原因：');
             console.log(err);

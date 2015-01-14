@@ -1,7 +1,7 @@
 
 /**
  * ptap buildcfg cmd
- * @author huangjia@pinganfang.com
+ * @author 水木年华double
  * @Date  201407
  */
 var colors = require('colors');
@@ -23,6 +23,7 @@ exports.name = 'buildcfg';
  }*/
 function getPackageCfg(dirPath) {
     var info = {};
+
     if (fs.existsSync(dirPath + path.sep + "package.json")) {
         try {
             info = JSON.parse(fs.readFileSync(fileName).toString());

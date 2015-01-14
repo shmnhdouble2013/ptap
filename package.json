@@ -1,8 +1,8 @@
 {
     "name": "ptap",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "pafang assets build tool.",
-    "author": "huangjia86",
+    "author": "水木年华double",
     "keywords": ["paf", "ptap", "asset", "publish"],
     "bin": {
         "ptap": "./bin/ptap"
@@ -36,7 +36,7 @@
     },
     "maintainers": [
         {
-            "name": "huangjia86",
+            "name": "水木年华double",
             "email": "huangjia86@yeah.net"
         }
     ],

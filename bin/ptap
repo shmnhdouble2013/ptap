@@ -31,12 +31,12 @@ program.on('--help', function() {
     console.log("\n");
 });
 
- program.command('init')
- .description('初始化git帐号（deprecated）')
- .action(function(){
-    var init = require('../commands/installer');
-    init.install();
- });
+program.command('init')
+    .description('初始化git帐号（deprecated）')
+    .action(function(){
+        var init = require('../commands/installer');
+        init.install();
+    });
 
 
 /*
@@ -73,7 +73,6 @@ program.on('--help', function() {
  var branch = require('../commands/branch');
  branch.mkbranch();
  });
-
  */
 
 program.command('build')
@@ -92,6 +91,8 @@ program.command('build')
         require('../commands/build')();
     });
 
+/*
+
 program.command('buildcfg')
     .description('生成包配置文件')
     .usage('[path]')
@@ -99,6 +100,8 @@ program.command('buildcfg')
     .action(function() {
         require('../commands/buildcfg.js')();
     });
+
+*/
 
 program.command('sprite')
     .description('自动生成sprite后的样式')
@@ -156,8 +159,9 @@ function dealWithArgv() {
 }
 
 // 自动检测更新
-// var checkversion = require('../commands/checkversion');
-// checkversion(dealWithArgv);
+var checkversion = require('../commands/checkversion');
+checkversion(dealWithArgv);
+
 
 dealWithArgv();
 

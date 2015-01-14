@@ -17,6 +17,7 @@ function enterUsername(){
 
 function enterPassword(usr){
     var msg = '请输入密码：';
+
     program.prompt(msg + ' ', function(pwd){
         if(pwd.length){
             saveUser(usr, pwd);
